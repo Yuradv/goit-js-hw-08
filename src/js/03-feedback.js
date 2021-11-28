@@ -10,31 +10,41 @@ const refs = {
 
 let formList = {};
 
-refs.form.addEventListener('submit', onFormSubmit);
 refs.form.addEventListener('input', throttle(ontextAreaInput, 500));
-
+refs.form.addEventListener('submit', onFormSubmit);
 populateTextarea();
 
 ////
+
 function ontextAreaInput(e) {
   formList[e.target.name] = e.target.value;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(formList));
 }
-//////
-function onFormSubmit(evt) {
-  evt.preventDefault();
 
+//////
+
+function onFormSubmit(e) {
+  e.preventDefault();
   console.log(formList);
-  evt.currentTarget.reset();
+  formList = {};
+
+  refs.form.reset();
+
+  localStorage.clear();
   localStorage.removeItem(STORAGE_KEY);
 }
-///////
+
+///
+
 function populateTextarea() {
   const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-  if (savedData) {
+  if (savedData !== null) {
     formList = savedData;
-    refs.email.value = savedData.email || '';
-    refs.message.value = savedData.message || '';
+    refs.email.value = savedData.email;
+    refs.message.value = savedData.message;
+  } else {
+    refs.email.value = '';
+    refs.message.value = '';
   }
 }
