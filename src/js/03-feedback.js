@@ -39,12 +39,9 @@ function onFormSubmit(e) {
 function populateTextarea() {
   const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-  if (savedData !== null) {
+  if (savedData) {
     formList = savedData;
-    refs.email.value = savedData.email;
-    refs.message.value = savedData.message;
-  } else {
-    refs.email.value = '';
-    refs.message.value = '';
+    refs.email.value = savedData.email || '';
+    refs.message.value = savedData.message || '';
   }
 }
